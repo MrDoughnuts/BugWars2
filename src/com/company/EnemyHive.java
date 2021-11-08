@@ -38,7 +38,8 @@ public class EnemyHive
 		bugs = EHive.StartingBugs;
 		totalBugs = bugs;
 		bugProduction = EHive.BugProduction;
-	}	
+	}
+
 
 	public void SendBugs(int NumOfBugs, Hills HillSelected) 
 	{
@@ -68,7 +69,7 @@ public class EnemyHive
 	{
 		RecallAllBugs(ListOfHills);
 
-		int attackForce = bugs/2;
+		int attackForce = (int) Math.floor(bugs / 2);
 
 		SendBugs(attackForce, WeakestHill);
 		SendBugs(attackForce, SecondWeakestHill);
@@ -97,15 +98,15 @@ public class EnemyHive
 		}
 	}
 
-	public void DivideAndConquer2(@NotNull ArrayList<Hills> ListOfEmptyHills, ArrayList<Hills> listOfHills)
-	{
+	public void DivideAndConquer2(@NotNull ArrayList<Hills> ListOfEmptyHills, ArrayList<Hills> listOfHills, ArrayList<Hills> ListOfWeakestEnemyHill) {
 		RecallAllBugs(listOfHills);
-		int attackForce = totalBugs/ListOfEmptyHills.size();
 
-		for(Hills i: ListOfEmptyHills)
-		{
-			SendBugs(attackForce, i);
+		for (Hills i : ListOfEmptyHills) {
+			SendBugs(1, i);
 		}
+		SendBugs(bugs, ListOfWeakestEnemyHill.get(0));
 
 	}
+
+
 }

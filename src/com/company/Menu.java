@@ -4,7 +4,6 @@ import java.util.*;
 
 public class Menu 
 {
-	public Hills hill0 = new Hills();
 	public Hills hill1 = new Hills();
 	public Hills hill2 = new Hills();
 	public Hills hill3 = new Hills();
@@ -24,7 +23,6 @@ public class Menu
 
 	public void newGame() 
 	{
-		ListOfHills.add(hill0);
 		ListOfHills.add(hill1);
 		ListOfHills.add(hill2);
 		ListOfHills.add(hill3);
@@ -156,12 +154,10 @@ public class Menu
 		System.out.println("How many bugs do you want to deploy?");
 		int BugsSelected = input.nextInt();
 
-		if (BugsSelected <= PHive.bugs) 
-		{
-			PHive.SendBugs(BugsSelected, ListOfHills.get(HillSelected));
-		}
-		else 
-		{
+		if (HillSelected < 6 && HillSelected > 0 && BugsSelected <= PHive.bugs) {
+			PHive.SendBugs(BugsSelected, ListOfHills.get(HillSelected - 1));
+
+		} else {
 			System.out.println("Please enter a valid number");
 		}
 
@@ -177,7 +173,7 @@ public class Menu
 		System.out.println("How many bugs do you want to recall?");
 		int BugsSelected = input.nextInt();
 
-		PHive.recallBugs(BugsSelected,ListOfHills.get(HillSelected));
+		PHive.recallBugs(BugsSelected, ListOfHills.get(HillSelected - 1));
 	}
 
 	public void ViewAllHills()
@@ -249,12 +245,12 @@ public class Menu
 			ArrayList<Hills> ListOfWeakHills = CheckForWeakestHill(PHive.HiveName);
 			EHive.DivideAndConquer(ListOfWeakHills.get(0), ListOfWeakHills.get(1), ListOfHills);
 		}
-		else
-		{
-			ArrayList<Hills> ListOfEmptyHills = CheckForEmptyHills(PHive.HiveName);
-			EHive.DivideAndConquer2(ListOfEmptyHills, ListOfHills);
+		else {
+			EHive.DivideAndConquer2(CheckForEmptyHills(PHive.HiveName), ListOfHills, CheckForWeakestHill(PHive.HiveName));
+
 		}
 	}
+
 
 	public boolean CheckFor3()
 	{
@@ -267,6 +263,7 @@ public class Menu
 		return HillsOccupied >= 3;
 	}
 
+
 	public ArrayList<Hills> CheckForWeakestHill(String HiveName)
 	{
 		ArrayList<Integer> ListOfBugs= new ArrayList<>();
@@ -277,31 +274,22 @@ public class Menu
 		{
 			for(Hills i : ListOfHills)
 			{
-				if(i != hill0)
-				{
 					ListOfBugs.add(i.Ants);
-				}
 			}
 		}
 		else if(Objects.equals(HiveName, "TermiteHive"))
 		{
 			for(Hills i : ListOfHills)
 			{
-				if(i != hill0)
-				{
 					ListOfBugs.add(i.Termites);
-				}
 			}
 		}
 		else if(Objects.equals(HiveName, "WaspHive"))
 		{	
 			for(Hills i : ListOfHills)
 			{
-				if(i != hill0)
-				{
 					ListOfBugs.add(i.Wasps);
 
-				}
 			}
 		}
 
@@ -311,8 +299,7 @@ public class Menu
 
 		for(int i = 1; i < ListOfBugs.size(); i++)
 		{
-			if(ListOfBugs.get(i) < tempBugs)
-			{
+			if (ListOfBugs.get(i) < tempBugs && ListOfBugs.get(i) > 0) {
 				tempBugs = ListOfBugs.get(i);
 				SmallestHillIndex = i;
 			}
@@ -321,8 +308,7 @@ public class Menu
 
 		for(int i = 1; i < ListOfBugs.size(); i++)
 		{
-			if(ListOfBugs.get(i) < tempBugs)
-			{
+			if (ListOfBugs.get(i) < tempBugs && ListOfBugs.get(i) > 0) {
 				tempBugs = ListOfBugs.get(i);
 				SecondSmallestHillIndex = i;
 			}
@@ -343,8 +329,7 @@ public class Menu
 		{
 			for(Hills i: ListOfHills)
 			{
-				if(i.Ants == 0 && i != hill0)
-				{
+				if (i.Ants == 0) {
 					ListOfEmptyHills.add(i);
 				}
 			}
@@ -353,8 +338,7 @@ public class Menu
 		{
 			for(Hills i: ListOfHills)
 			{
-				if(i.Termites == 0 && i != hill0)
-				{
+				if (i.Termites == 0) {
 					ListOfEmptyHills.add(i);
 				}
 			}
@@ -363,8 +347,7 @@ public class Menu
 		{
 			for(Hills i: ListOfHills)
 			{
-				if(i.Wasps == 0 && i != hill0)
-				{
+				if (i.Wasps == 0) {
 					ListOfEmptyHills.add(i);
 				}
 			}
